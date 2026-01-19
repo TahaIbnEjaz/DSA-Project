@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Quiz System | User-Form</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+body{height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1b2a32);background-size:400% 400%;animation:bgMove 12s ease infinite;}
+.blob{position:absolute;width:260px;height:260px;background:rgba(255,255,255,0.08);border-radius:50%;filter:blur(10px);animation:blobFloat 14s infinite ease-in-out;}
+.blob.one{top:-80px;left:-80px;}
+.blob.two{bottom:-90px;right:-90px;animation-delay:4s;}
+.form-box{background:rgba(255,255,255,0.15);backdrop-filter:blur(18px);padding:45px 50px;width:430px;border-radius:22px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,0.35);}
+input, select{width:80%;padding:12px;margin:10px 0;border-radius:12px;border:none;outline:none;font-size:15px;}
+.btn{margin-top:20px;padding:13px 36px;border:none;border-radius:30px;background:linear-gradient(135deg,#203a43,#0f2027);color:#fff;cursor:pointer;transition:0.4s;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.4);}
+@keyframes bgMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes blobFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(40px);}}
+h2{color:white}
+</style>
+</head>
+<body>
+
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+<div class="form-box">
+    <form action="/Menu" method="post">
+        <h2>User Form</h2>
+        <input type="text" id="name" placeholder="Name" required name="name">
+        <input type="number" id="age" placeholder="Age" required name="age">
+        <select id="faculty" name="faculty" required>
+            <option value="" disabled selected>Select Faculty</option>
+            <option value="CS">CS</option>
+            <option value="BBA">BBA</option>
+            <option value="MBBS">MBBS</option>
+        </select>
+        <select id="country" name="country" required>
+            <option value="" disabled selected>Select Country</option>
+            <option value="Pakistan">Pakistan</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+        </select>
+        <input type="email" id="email" placeholder="Email" required name="email">
+        <button class="btn" id="submitBtn" type="submit">Submit</button>
+    </form>
+    
+</div>
+
+<script>
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+    const faculty = document.getElementById('faculty').value;
+    if(!faculty) { alert("Select faculty"); return; }
+    localStorage.setItem('selectedFaculty', faculty);
+});
+</script>
+
+</body>
+</html>

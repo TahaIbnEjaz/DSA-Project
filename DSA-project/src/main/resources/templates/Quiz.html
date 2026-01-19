@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Online Quiz System | Quiz</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1b2a32);
+    background-size:400% 400%;
+    animation:bgMove 14s ease infinite;
+    overflow:hidden;
+}
+
+
+.blob{
+    position:absolute;
+    width:260px;
+    height:260px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    filter:blur(12px);
+    animation:blobFloat 15s infinite ease-in-out;
+}
+
+.blob.one{ top:-90px; left:-90px; }
+.blob.two{ bottom:-100px; right:-100px; animation-delay:5s; }
+
+
+.quiz-box{
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(18px);
+    width:540px;
+    padding:40px;
+    border-radius:22px;
+    box-shadow:0 25px 50px rgba(0,0,0,0.4);
+    animation:cardReveal 1.4s ease forwards;
+    opacity:0;
+    transform:translateY(40px);
+}
+
+
+.quiz-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+    color:#fff;
+}
+
+.timer{
+    background:rgba(255,255,255,0.2);
+    padding:6px 16px;
+    border-radius:20px;
+    font-weight:600;
+}
+
+
+.question{
+    font-size:18px;
+    color:#f0f0f0;
+    margin-bottom:20px;
+    animation:textUp 1.4s ease forwards;
+    opacity:0;
+}
+
+
+.options label{
+    display:block;
+    padding:14px;
+    margin-bottom:14px;
+    background:rgba(255,255,255,0.18);
+    border-radius:14px;
+    cursor:pointer;
+    color:#fff;
+    transition:0.35s;
+}
+
+.options label:hover{
+    background:rgba(255,255,255,0.3);
+    transform:translateX(5px);
+}
+
+.options input{
+    margin-right:10px;
+}
+
+
+.btn-box{
+    display:flex;
+    justify-content:space-between;
+    margin-top:30px;
+}
+
+.btn{
+    padding:13px 36px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg,#203a43,#0f2027);
+    color:#fff;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.4s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.4);
+}
+
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+@keyframes blobFloat{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(40px);}
+}
+
+@keyframes cardReveal{
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes textUp{
+    from{transform:translateY(20px); opacity:0;}
+    to{transform:translateY(0); opacity:1;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+<div class="quiz-box">
+
+    <div class="quiz-header">
+        <h2><span th:text="${course}"></span>Quiz</h2>
+        <div class="timer">30 sec</div>
+    </div>
+
+    <form id="quizForm" th:action="@{/Quiz/next}" method="post">
+        <div class="question" > <span th:text="${Qno}"></span>: <span th:text="${question.questionText}"></span> </div>
+
+        <div class="options">
+            <label><input type="radio" name="choosenOption" value="1">1. <span th:text="${question.options[0]}"></span></label>
+            <label><input type="radio" name="choosenOption" value="2">2. <span th:text="${question.options[1]}"></span></label>
+            <label><input type="radio" name="choosenOption" value="3">3. <span th:text="${question.options[2]}"></span></label>
+            <label><input type="radio" name="choosenOption" value="4">4. <span th:text="${question.options[3]}"></span></label>
+        </div>
+
+        <div class="btn-box">
+            <button class="btn" id="nextBtn" type="submit" th:if="${isLast != true}">Next</button>
+            <button class="btn" id="submitBtn" th:href="@{/result}" th:if="${isLast == true}">Submit</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    let time = 30;
+    const t = document.querySelector(".timer");
+
+    const interval = setInterval(() => {
+        time--;
+        t.textContent = time + " sec";
+
+        if (time === 0) {
+            clearInterval(interval);
+            document.getElementById("quizForm").submit();
+        }
+    }, 1000);
+
+</script>
+</body>
+</html>

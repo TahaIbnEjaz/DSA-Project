@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard | Online Quiz System</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:#1F3B4D;
+            overflow:hidden;
+        }
+
+        .circle{
+            position:absolute;
+            width:200px;
+            height:200px;
+            background:rgba(255,255,255,0.08);
+            border-radius:50%;
+            animation:float 6s infinite ease-in-out;
+        }
+
+        .circle:nth-child(1){
+            top:-50px;
+            left:-50px;
+        }
+
+        .circle:nth-child(2){
+            bottom:-60px;
+            right:-60px;
+            animation-delay:2s;
+        }
+
+        .box{
+            background:rgba(255,255,255,0.95);
+            padding:35px 40px;
+            width:700px;
+            border-radius:20px;
+            text-align:center;
+            box-shadow:0 20px 40px rgba(0,0,0,0.4);
+            animation:fadeIn 1.2s ease;
+            z-index:1;
+        }
+
+        h1{
+            font-size:32px;
+            color:#1F3B4D;
+            margin-bottom:20px;
+            animation:slideIn 1.2s ease;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-bottom:25px;
+            animation:slideIn 1.6s ease;
+        }
+
+        th, td{
+            padding:12px;
+            text-align:center;
+            border-bottom:1px solid #ddd;
+        }
+
+        th{
+            background:#1F3B4D;
+            color:#fff;
+        }
+
+        tr:nth-child(even){
+            background:#f4f4f4;
+        }
+
+        .btn{
+            display:inline-block;
+            padding:12px 30px;
+            font-size:15px;
+            color:#fff;
+            background:#1F3B4D;
+            border:none;
+            border-radius:30px;
+            cursor:pointer;
+            text-decoration:none;
+            transition:all 0.4s ease;
+            animation:pulse 2s infinite;
+        }
+
+        .btn:hover{
+            transform:translateY(-3px) scale(1.05);
+            box-shadow:0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeIn{
+            from{opacity:0; transform:translateY(30px);}
+            to{opacity:1; transform:translateY(0);}
+        }
+
+        @keyframes slideIn{
+            from{opacity:0; transform:translateX(-40px);}
+            to{opacity:1; transform:translateX(0);}
+        }
+
+        @keyframes pulse{
+            0%{box-shadow:0 0 0 0 rgba(31,59,77,0.6);}
+            70%{box-shadow:0 0 0 15px rgba(31,59,77,0);}
+            100%{box-shadow:0 0 0 0 rgba(31,59,77,0);}
+        }
+
+        @keyframes float{
+            0%{transform:translateY(0);}
+            50%{transform:translateY(20px);}
+            100%{transform:translateY(0);}
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <div class="box">
+        <h1>🏆 Leaderboard</h1>
+
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Score</th>
+            </tr>
+            <tr th:each="entry , stat : ${leaderboard}">
+                <td th:text="${stat.count}"></td>
+                <td th:text="${entry.name}"></td>
+                <td th:text="${entry.course}"></td>
+                <td th:text="${entry.percentage} + '%'"></td>
+            </tr>
+        </table>
+
+        <a href="/" class="btn">Back to Home</a>
+    </div>
+
+</body>
+</html>
